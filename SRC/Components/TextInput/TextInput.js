@@ -33,9 +33,8 @@ const TextInputCustom = ({
     <View
       style={{
         flexDirection: 'row',
-        borderColor: colors.borderLightGrey,
-        borderWidth: 1,
-        borderRadius: widthPercentageToDP('10'),
+        // borderColor: colors.borderLightGrey,
+        // borderWidth: 1,
       }}>
       <View
         style={{
@@ -44,12 +43,13 @@ const TextInputCustom = ({
           alignItems: 'center',
           paddingHorizontal: wp('1'),
           backgroundColor: '#FDEB13',
-          borderRadius: wp('10'),
+          borderRadius:wp('10')
+
         }}>
         <Icon name={iconName} color={iconColor} size={30} />
       </View>
 
-      <View style={{flex: 0.86, justifyContent: 'center'}}>
+      <View style={{flex: 0.86, justifyContent: 'center',}}>
         <TextInput
           style={style}
           onChangeText={onChangeText}

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 // import Left from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-fontawesome-pro';
+import Ficon from 'react-native-fontawesome-pro';
 import Menu from 'react-native-vector-icons/Entypo';
 import Clinder from 'react-native-vector-icons/AntDesign';
 import EStyleSheet from 'react-native-extended-stylesheet';
-
+import LinearGradient from 'react-native-linear-gradient';
+// import { Icon } from 'react-native-gradient-icon';
 import {
   ScrollView,
   RefreshControl,
@@ -70,25 +71,28 @@ const HomeScreen = props => {
   };
 
   return (
-  
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor:
-            Platform.OS === 'android' ? colors.white : colors.white,
-        }}>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={colors.yellowColor}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor:
+          Platform.OS === 'android' ? colors.white : colors.white,
+      }}>
+      <LinearGradient
+       start={{x: 0, y: 0}}
+       end={{x: 1, y: 0}}
+       colors={['#1C37A5', '#4D69DC']}
+        style={{height: hp('5')}}>
+        <StatusBar translucent backgroundColor="transparent" />
+      </LinearGradient>
+
+      <View>
+        <HeaderTop
+          onPressIcon={() => navigation.openDrawer()}
+          iconName={'arrowleft'}
+          text={'Change Password'}
         />
-        <View>
-          <HeaderTop
-            onPressIcon={() => navigation.openDrawer()}
-            iconName={'arrowleft'}
-            text={'Change Password'}
-          />
-        </View>
-        <ScrollView>
+      </View>
+      <ScrollView>
         <View style={styles.botContainer}>
           <View
             style={{
@@ -98,8 +102,13 @@ const HomeScreen = props => {
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-              <Icon name="bars-progress" size={35} color="#AED6F1" />
+            <View style={{alignContent: 'center', marginHorizontal: hp(5)}}>
+              <Ficon
+                type="light"
+                name="bars-progress"
+                size={hp(3.5)}
+                color="#AED6F1"
+              />
             </View>
             <View
               style={{
@@ -123,8 +132,13 @@ const HomeScreen = props => {
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-              <Icon name="chart-area" size={35} color="#AED6F1" />
+            <View style={{alignContent: 'center', marginHorizontal: hp(5)}}>
+              <Ficon
+                type="light"
+                name="chart-area"
+                size={hp(3.5)}
+                color="#AED6F1"
+              />
             </View>
             <View
               style={{
@@ -147,8 +161,19 @@ const HomeScreen = props => {
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-              <Clinder name="calendar" size={35} color="#AED6F1" />
+            <View
+              style={{
+                alignContent: 'center',
+                marginHorizontal: hp(5),
+                justifyContent: 'center',
+              }}>
+              <Ficon
+                type="light"
+                containerStyle={styles.iconStyle}
+                name="calendar-days"
+                size={hp(3.5)}
+                color="#AED6F1"
+              />
             </View>
             <View
               style={{
@@ -168,62 +193,62 @@ const HomeScreen = props => {
         <View>
           <Calinder />
         </View>
-        </ScrollView>
+      </ScrollView>
 
+      <View
+        style={{
+          backgroundColor: '#fff',
+          position: 'relative',
+          bottom: hp(0),
+        }}>
         <View
           style={{
-            backgroundColor: '#fff',
-            position: 'relative',
-            bottom:hp(0)
-           
+            height: hp(7),
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
           }}>
-          <View
+          {/* <View style={{flex:0.1}}></View> */}
+          <TouchableOpacity
+            onPress={() => {}}
+            style={{flex: 0.2, alignItems: 'center'}}>
+            <Menu name="home" size={hp(4)} color="#1C37A4" style={{}} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{flex: 0.2, paddingTop: hp(0.5), alignItems: 'center'}}>
+            <Ficon name="book-bookmark" size={hp(4)} color="#979797" />
+          </TouchableOpacity>
+          <TouchableOpacity
             style={{
-              height: hp(7),
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignContent: 'center',
+              flex: 0.2,
               alignItems: 'center',
-             
             }}>
-            {/* <View style={{flex:0.1}}></View> */}
-            <TouchableOpacity
-              onPress={() => {}}
-              style={{flex: 0.2, alignItems: 'center', }}>
-              <Menu name="home" size={hp(4)} color="#1C37A4" style={{}} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{flex: 0.2, paddingTop: hp(0.5), alignItems: 'center'}}>
-              <Icon name="book-bookmark" size={hp(4)} color="#979797" />
-            </TouchableOpacity>
-            <TouchableOpacity
+            <View
               style={{
-                flex: 0.2, alignItems: 'center'
+                height: hp('6'),
+                alignItems: 'center',
+                width: wp(12),
+                borderWidth: hp(0.5),
+                borderColor: 'gray',
+                borderRadius: hp(50),
+                backgroundColor: 'black',
+                justifyContent: 'center',
               }}>
-              <View
-                style={{
-                  height: hp('6'),
-                  alignItems: 'center',
-                  width:wp(12),
-                  borderWidth: hp(0.5),
-                  borderColor: 'gray',
-                  borderRadius: hp(50),
-                  backgroundColor: 'black',
-                  justifyContent: 'center',
-                }}>
-                <Icon style={{}} name="qrcode" size={hp(4)} color="#fff" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{flex: 0.2,alignItems: 'center'}}>
-              <Clinder name="calendar" size={hp(4)} color="#979797" />
-            </TouchableOpacity>
-            <TouchableOpacity style={{flex: 0.2, alignItems: 'center', paddingTop: hp(0)}}>
-              <Icon name="user-tie" size={hp(4)} color="#979797" />
-            </TouchableOpacity>
-            {/* <View style={{flex:0.1}}></View> */}
-          </View>
+              <Ficon style={{}} name="qrcode" size={hp(4)} color="#fff" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={{flex: 0.2, alignItems: 'center'}}>
+            <Clinder name="calendar" size={hp(4)} color="#979797" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{flex: 0.2, alignItems: 'center', paddingTop: hp(0)}}>
+            <Ficon name="user-tie" size={hp(4)} color="#979797" />
+          </TouchableOpacity>
+          {/* <View style={{flex:0.1}}></View> */}
         </View>
-      </SafeAreaView>
-   
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -330,6 +355,13 @@ const styles = EStyleSheet.create({
     letterSpacing: -0.05,
     paddingLeft: wp('3'),
     color: colors.loginIconColor,
+  },
+  iconStyle: {
+    fontSize: '1.5625rem',
+    fontWeight: 300,
+  },
+  linearGradient: {
+    flex: 1,
   },
 });
 

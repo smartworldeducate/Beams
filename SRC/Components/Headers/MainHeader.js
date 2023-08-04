@@ -10,10 +10,10 @@ import {
 const MainHeader = ({text,iconName,onpressBtn}) => {
   return (
     <>
-    <StatusBar
+    {/* <StatusBar
         backgroundColor={'#1C37A4'}
         barStyle="Light-content"
-      />
+      /> */}
     <View style={styles.mainHeader}>
       <View style={styles.headerChild}>
         <TouchableOpacity onPress={onpressBtn} style={styles.headerRow}>

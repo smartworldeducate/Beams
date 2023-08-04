@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: hp('7'),
     borderRadius: wp('10'),
-    borderColor: colors.grey,
-    borderWidth: wp('0.1'),
+    // borderColor: colors.grey,
+    // borderWidth: wp('0.1'),
     marginBottom: hp('2'),
     shadowColor: '#000',
     shadowOffset: {

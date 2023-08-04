@@ -8,6 +8,8 @@ import Chart from 'react-native-vector-icons/FontAwesome5';
 import Clinder from 'react-native-vector-icons/AntDesign';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-fontawesome-pro';
+// import LinearGradient from 'react-native-linear-gradient';
+
 import {
   SafeAreaView,
   StatusBar,
@@ -32,6 +34,7 @@ import Card from '../Card';
 import fontFamily from '../../Styles/fontFamily';
 import fontSize from '../../Styles/fontSize';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HeaderTop = ({
   iconName,
@@ -76,10 +79,135 @@ const HeaderTop = ({
   const onPressLogin = () => {
     handleNavigate('HomeScreen');
   };
+
   return (
     <>
-      <StatusBar backgroundColor={'#1C37A4'} barStyle="Light-content" />
-      <View style={styles.mainHeader}>
+      <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#1C37A5', '#4D69DC']}
+          style={styles.mainHeader}
+          >
+        <View style={styles.headerChild}>
+        
+            
+              <View
+                style={{
+                  width: wp(50),
+                  height: hp(7.9),
+                  flexDirection: 'row',
+                }}>
+                <View
+                  style={{
+                    width: wp(12),
+                    height: hp(6),
+                    borderRadius: hp(2),
+                    marginVertical: hp(1),
+                    marginRight: hp(3),
+                  }}>
+                  <Image
+                    style={{width: wp(12), height: hp(6), borderRadius: hp(1)}}
+                    source={{uri: 'artg'}}
+                    resizeMode="cover"
+                  />
+                </View>
+                <View style={{marginTop: hp(0.5), marginLeft: hp(-1.5)}}>
+                  <View>
+                    <Text style={styles.ztitle}>Welcome</Text>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: hp(0)}}>
+                    <View style={{marginRight: hp(1)}}>
+                      <View style={{flexDirection: 'row', marginTop: hp(0)}}>
+                        <View style={{marginRight: hp(1)}}>
+                          <Text style={styles.zetext1}>Zeeshan Hafeez</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+           
+       
+
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{marginTop: hp(2), marginRight: hp(2)}}
+              onPress={() => handleNavigate('Notification')}>
+              <Icon name="bell" size={hp(3)} color="#fff"/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onPressIcon}
+              style={{marginTop: hp(1.3)}}>
+              <Menu name="menu" size={40} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.headerRow}>
+          <View>
+            <View
+              style={{
+                marginTop: hp(1),
+                flexDirection: 'row',
+                backgroundColor: '#fff',
+                justifyContent: 'space-between',
+                marginHorizontal: hp(2.5),
+                borderRadius: hp(1),
+                shadowColor: '#000',
+                shadowOpacity: 0.5,
+                shadowRadius: 4,
+                elevation: 4,
+              }}>
+              <View
+                style={{
+                  width: wp(45),
+                  height: hp(6),
+                  backgroundColor: '#58D68D ',
+                  borderRadius: hp(2),
+                  marginHorizontal: hp(1),
+                }}>
+                <TextInput
+                  value={employeeId}
+                  onChangeText={onChangeEmpId}
+                  returnKeyType={'done'}
+                  iconName={'user'}
+                  placeholder={'Search Employee'}
+                  placeholderColor={'gray'}
+                  iconColor={colors.loginIconColor}
+                  placeholderTextColor="gray"
+                  style={styles.textInputCustomStyle}></TextInput>
+              </View>
+              <View style={{marginTop: hp(0.5), marginRight: hp(1)}}>
+                <Serch name="search" size={40} color="#292D32" />
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent:'center',
+            marginHorizontal: hp(10),
+            alignItems:'center',
+            marginVertical: hp(3),
+          }}>
+          {data.map((item, i) => {
+            return (
+              <View style={{width: wp(10), marginLeft: hp(-1)}}>
+                <Image
+                  style={{width: wp(10), height: hp(5), borderRadius: hp(50)}}
+                  source={{uri: item.image}}
+                  resizeMode="cover"
+                />
+              </View>
+            );
+          })}
+        </View>
+      
+         
+        </LinearGradient>
+      {/* <View style={styles.mainHeader}>
         <View style={styles.headerChild}>
           <View style={styles.headerRow}>
             <View>
@@ -201,83 +329,6 @@ const HeaderTop = ({
             );
           })}
         </View>
-      </View>
-
-      {/* <View style={styles.botContainer}>
-        <View
-          style={{
-            width: wp(30),
-            height: hp(9),
-            justifyContent: 'space-between',
-            justifyContent: 'center',
-            alignContent: 'center',
-          }}>
-          <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-            <Icon name="bars-progress" size={35} color="#AED6F1" />
-          </View>
-          <View
-            style={{
-              alignContent: 'center',
-              marginHorizontal: hp(1),
-              width: wp(30),
-            }}>
-            <Text style={[styles.bootContText1, {marginLeft: hp(0)}]}>
-              3.7 Years
-            </Text>
-            <Text style={[styles.bootContText2, {marginLeft: hp(-1.5)}]}>
-              Service Length
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            width: wp(30),
-            height: hp(9),
-            justifyContent: 'space-between',
-            justifyContent: 'center',
-            alignContent: 'center',
-          }}>
-          <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-            <Icon name="chart-area" size={35} color="#AED6F1" />
-          </View>
-          <View
-            style={{
-              alignContent: 'center',
-              marginHorizontal: hp(1),
-              width: wp(30),
-            }}>
-            <Text style={[styles.bootContText1, {}]}>Regular</Text>
-            <Text style={[styles.bootContText2, {paddingLeft: hp(2.5)}]}>
-              Status
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: wp(30),
-            height: hp(9),
-            justifyContent: 'space-between',
-            justifyContent: 'center',
-            alignContent: 'center',
-          }}>
-          <View style={{alignContent: 'center', marginHorizontal: hp(4)}}>
-            <Clinder name="calendar" size={35} color="#AED6F1" />
-          </View>
-          <View
-            style={{
-              alignContent: 'center',
-              marginHorizontal: hp(1),
-              width: wp(30),
-            }}>
-            <Text style={styles.bootContText1}>08:59:05</Text>
-            <Text style={[styles.bootContText2, {paddingLeft: hp(1.5)}]}>Attendance</Text>
-          </View>
-        </View>
-      </View> */}
-
-      {/* <View>
-        <Card />
       </View> */}
     </>
   );
@@ -287,17 +338,16 @@ export default HeaderTop;
 
 const styles = EStyleSheet.create({
   mainHeader: {
-    marginTop: hp(1),
-    width: wp(100),
+    // marginTop: hp(5),
+    // width: wp(100),
     height: hp(28),
-    backgroundColor: '#1C37A4',
+    // backgroundColor: '#1C37A4',
     borderBottomRightRadius: hp(2.5),
     borderBottomLeftRadius: hp(2.5),
   },
   headerChild: {
-    marginTop: hp(5),
+    // marginTop: hp(2),
     flexDirection: 'row',
-    width: wp(90),
     justifyContent: 'space-between',
     marginHorizontal: hp(2),
   },
@@ -306,9 +356,9 @@ const styles = EStyleSheet.create({
     fontSize: hp(2),
     marginTop: hp(0.5),
   },
-  headerRow: {
-    justifyContent: 'space-between',
-  },
+  // headerRow: {
+  //   justifyContent: 'space-between',
+  // },
   botContainer: {
     backgroundColor: '#F0F3F4',
     marginTop: hp(2),
@@ -348,17 +398,19 @@ const styles = EStyleSheet.create({
   },
   zetext1: {
     color: '#fff',
-    fontSize: '0.9rem',
-    fontWeight: '100',
+    fontSize: '1.125remrem',
+    fontWeight: '500',
     fontFamily: fontFamily.ceraBlack,
+    fontStyle: 'normal',
   },
 
   ztitle: {
     color: '#fff',
     fontSize:'0.5rem',
-    fontWeight: '600',
+    fontWeight: '300',
     marginTop: hp(1),
     fontFamily: fontFamily.ceraBlack,
+    fontStyle: 'normal',
   },
   textInputCustomStyle: {
     fontSize: hp('1.65'),
