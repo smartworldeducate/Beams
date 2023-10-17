@@ -1,4 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import Modal from 'react-native-modal';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {loginUserHandle} from '../features/register/googleLoginSlice';
 import {
   SafeAreaView,
   StatusBar,
@@ -11,6 +18,8 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -24,15 +33,78 @@ import {
   useNavigation,
   CommonActions,
 } from '@react-navigation/native';
-const Login = () => {
-  const [employeeId, setEmployeeId] = useState();
-  const [employeePassword, setEmployeePassword] = useState();
-
+const Login = props => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleNavigate = (routeName, clearStack, params) => {
     navigation.navigate(routeName, params);
     if (clearStack) {
       console.log('Clear');
+    }
+  };
+  const [employeeId, setEmployeeId] = useState();
+  const [employeePassword, setEmployeePassword] = useState();
+  const [loaduiung, setLoding] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [animodal, setAnimodal] = useState(false);
+  const [animation, setAnimation] = useState(true);
+  const [data, setData] = useState([]);
+  const handleLogin = async () => {
+    if (employeeId && employeePassword !== '') {
+      var login_data = await dispatch(
+        loginUserHandle({employeeId: employeeId, password: employeePassword}),
+      );
+      console.log("login data on login screen",login_data.payload);
+      // setData(login_data?.payload?.message);
+      // setLoding(true);
+      // if (login_data?.payload?.success == 1) {
+      //   props.navigation.navigate('HomeScreen');
+      //   setLoding(false);
+      // } else {
+      //   ToastAndroid.showWithGravity(
+      //     login_data?.payload?.message,
+      //     ToastAndroid.LONG,
+      //     ToastAndroid.CENTER,
+      //   );
+      // }
+    } else {
+      ToastAndroid.showWithGravity(
+        'enter valid username and password',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    }
+  };
+  //249159142983-3r1307q40tb9de7qctsm4ckk244etg9h.apps.googleusercontent.com
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '941654580803-btnt6no51u8js15k4aorf8gqiu9vq2jf.apps.googleusercontent.com',
+    });
+  }, []);
+  const signinWithGoogle = async () => {
+    // setAnimodal(true)
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo?.user);
+      handleNavigate('HomeScreen');
+      const {id, name, email, givenName, photo} = userInfo?.user;
+      await storeData({google_id: id, photo: photo});
+      const glData = await dispatch(loginUser({email: email, google_id: id}));
+      // console.log("google data",glData.payload.data)
+      // glData.payload.data ? props.navigation.navigate('Home') : props.navigation.navigate('Register')
+      // setAnimodal(false)
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
     }
   };
 
@@ -48,10 +120,16 @@ const Login = () => {
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const onPressLogin=()=>{
-    handleNavigate("Home");
-  }
+  const onPressLogin = () => {
+    handleNavigate('HomeScreen');
+  };
 
+  const [showPassword, setShowPassword] = useState(true);
+  const [eyeType, setEyeType] = useState(false);
+  const onPressShowPassword = () => {
+    setShowPassword(!showPassword);
+    setEyeType(!eyeType);
+  };
   return (
     <SafeAreaView
       style={{
@@ -60,6 +138,29 @@ const Login = () => {
           Platform.OS === 'android' ? colors.white : colors.white,
       }}>
       <StatusBar barStyle={'default'} backgroundColor={colors.loginIconColor} />
+      {animation && (
+        <View>
+          <Modal isVisible={animodal}>
+            <View
+              style={{
+                width: wp(30),
+                height: hp(15),
+                backgroundColor: '#EAFAF1',
+                borderRadius: hp(2),
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginHorizontal: hp(15),
+              }}>
+              <View style={{}}>
+                <ActivityIndicator animating={animation} size={'large'} />
+              </View>
+              <View style={{}}>
+                <Text>please wait</Text>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      )}
       <ImageBackground
         source={{uri: 'appbg'}}
         style={{flex: 1}}
@@ -98,7 +199,7 @@ const Login = () => {
                 iconName={'user'}
                 placeholder={'Employee ID'}
                 placeholderColor={colors.loginTextColor}
-                iconColor={colors.loginIconColor}
+                // iconColor={colors.loginIconColor}
                 style={styles.textInputCustomStyle}
               />
             </View>
@@ -111,73 +212,39 @@ const Login = () => {
                 maxLength={11}
                 returnKeyType={'done'}
                 iconName={'key'}
+                iconRight={eyeType == true ? 'eye' : 'eye-slash'}
                 placeholder={'Password'}
                 placeholderColor={colors.loginTextColor}
+                secureTextEntry={showPassword}
                 iconColor={colors.loginIconColor}
+                onPressIcon={onPressShowPassword}
                 style={styles.textInputCustomStyle}
               />
             </View>
-
-            <View style={{flexDirection: 'row', marginTop: hp('1')}}>
-              <View
-                style={{
-                  flex: 0.15,
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }}>
-                <Switch
-                  trackColor={{false: '#767577', true: colors.loginIconColor}}
-                  thumbColor={isEnabled ? 'white' : 'silver'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                  // style={{transform: [{scaleX: 1.1}, {scaleY: 1.1}]}}
-                />
-              </View>
-              <View style={{flex: 0.45, justifyContent: 'center'}}>
-                <Text
-                  style={{color: colors.loginTextColor, fontSize: hp('1.75')}}>
-                  Remember Me
-                </Text>
-              </View>
-
-              <TouchableOpacity
-                onPress={() => handleNavigate('ForgotPassword')}
-                style={{
-                  flex: 0.4,
-                  justifyContent: 'center',
-                  alignItems: 'flex-end',
-                }}>
-                <Text
-                  style={{color: colors.loginTextColor, fontSize: hp('1.75')}}>
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
-            </View>
-
             <View
               style={{
                 marginTop: hp('3'),
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Button
-              onPress={onPressLogin}
-                height={hp('7')}
-                width={wp('90')}
-                text="LOGIN"
-                bgColor={colors.whiteColor}
-                textColor={colors.loginIconColor}
-                textSize={hp('2')}
-                borderRadius={wp('10')}
-                borderColor={'#BABABA33'}
-                borderWidth={wp('0.3')}
-                shadowColor={'#000'}
-                shadowOffset={{width: 0, height: 12}}
-                shadowOpacity={0.58}
-                shadowRadius={16}
-                elevation={7}
-              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={handleLogin}
+                style={{
+                  height: hp('7'),
+                  width: wp('90'),
+                  backgroundColor: colors.whiteColor,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: wp(10),
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 12},
+                  shadowOpacity: 0.58,
+                  shadowRadius: 16,
+                  elevation: 7,
+                }}>
+                <Text style={{color: '#000'}}>LOGIN</Text>
+              </TouchableOpacity>
             </View>
 
             <Text
@@ -192,7 +259,18 @@ const Login = () => {
               OR
             </Text>
 
-            <TouchableOpacity style={styles.loginWithGoogle}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.loginWithGoogle}
+              onPress={() =>
+                signinWithGoogle()
+                  .then(res => {
+                    console.log('respo:', res);
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+              }>
               <View style={{flex: 0.15, backgroundColor: 'white'}}></View>
 
               <View
@@ -220,6 +298,20 @@ const Login = () => {
               <View style={{flex: 0.1, backgroundColor: 'pink'}}></View>
             </TouchableOpacity>
           </View>
+          <View style={{justifyContent: 'center', marginTop: hp(5)}}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => handleNavigate('ForgotPassword')}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{color: colors.loginTextColor, fontSize: hp('1.75')}}>
+                Reset Password?
+              </Text>
+            </TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>
       </ImageBackground>
     </SafeAreaView>
@@ -235,8 +327,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: hp('7'),
     borderRadius: wp('10'),
-    borderColor: colors.grey,
-    borderWidth: wp('0.1'),
+    // borderColor: colors.grey,
+    // borderWidth: wp('0.1'),
     marginBottom: hp('2'),
     shadowColor: '#000',
     shadowOffset: {
@@ -262,8 +354,8 @@ const styles = StyleSheet.create({
     height: hp('7'),
 
     borderRadius: wp('10'),
-    borderColor: colors.grey,
-    borderWidth: wp('0.1'),
+    // borderColor: colors.grey,
+    // borderWidth: wp('0.1'),
     marginBottom: hp('2'),
     shadowColor: '#000',
     shadowOffset: {

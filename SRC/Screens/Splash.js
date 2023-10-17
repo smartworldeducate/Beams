@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, ImageBackground, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  ImageBackground,
+  View,
+  Text,
+} from 'react-native';
 import {
   useLinkProps,
   useNavigation,
@@ -23,17 +30,20 @@ const Splash = () => {
   };
 
   setTimeout(async () => {
-    handleNavigate('WelcomeScreen', true);
-  }, 5000);
+    handleNavigate('Skip1', true);
+  }, 3000);
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor:
-          Platform.OS === 'android' ? "white": "white",
+        backgroundColor: Platform.OS === 'android' ? 'white' : 'white',
       }}>
-      <StatusBar barStyle={'default'} translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle={'default'}
+        translucent
+        backgroundColor="transparent"
+      />
       <ImageBackground
         source={{uri: 'splash'}}
         style={{flex: 1}}
